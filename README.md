@@ -5,27 +5,90 @@ Subject: Computação Inspirada pela Natureza. Algorithms developed for behavior
 The solutions presented here were developed for study purposes, in the postgraduate course "Computação Inspirada Pela Natureza"
 
 # Exercise 01
-**Objetivo:** Implementar um algoritmo genético que reconheça o número 0, representado pela bitstring [1 1 1 1 0 1 1 0 1 1 1 1].
+**Goal:** Implement a genetic algorithm that recognizes the number 0, represented by the bitstring [1 1 1 1 1 0 1 1 0 1 1 1 1 1]. 
 
-**Parâmetros para execução do algoritmo:**
-- PC (número real): taxa de crossover;
-- pm (número real): probabilidade de mutação;
-- n (número inteiro par): número de indivíduos da população;
+**Parameters for algorithm execution:**
+- $PC$ (real number): crossover rate;
+- $pm$ (real number): mutation probability;
+- $n$ (even integer): number of individuals in the population;
 
-**Funcionamento do Algoritmo:** Inicialmente cria-se a população. Ela consiste em uma matriz de n linhas e 12 colunas. Cada indivíduo é criado sorteando-se 0’s e 1’s sob uma distribuição uniforme.
+**Algorithm Operation:** First the population is created. It consists of a matrix of $n$ rows and 12 columns. Each individual is created by drawing 0's and 1's under a uniform distribution.
 
-A função de avaliação considerada foi a Distância de Hamming. Dessa forma, extraiu-se a aptidão da população tomando o tamanho da bitstring, 12, e subtraindo das distâncias de Hamming obtidas de cada indivíduo. Um indivíduo com aptidão ideal possui o valor f = 12. Portanto, o critério de parada do algoritmo é o de que ao menos um indivíduo tenha essa aptidão.
+The evaluation function considered was the Hamming Distance. This way, the fitness of the population was extracted taking the size of the bitstring, 12, and subtracting the Hamming distances obtained from each individual. An individual with ideal fitness has the value $f = 12$. Therefore, the stopping criterion of the algorithm is that at least one individual has this fitness.
 
-O método de seleção proposto foi a seleção por roleta, no qual cada indivíduo possui uma parcela na roleta proporcional à sua aptidão. Assim, são sorteados n números inteiros, que posteriormente retornará a qual indivíduo ele pertence. Formando então uma nova população com os indivíduos.
+The selection method proposed was roulette wheel selection, in which each individual has a share in the roulette proportional to its aptitude. Thus, $n$ numbers are drawn, which will later return to which individual it belongs. Forming then a new population with the individuals.
 
-Para a fase de cruzamento, a população é dividida em pares, de modo que cada par corresponde aos dois indivíduos que possivelmente gerarão outros dois descendentes que os substituirão na população. A taxa de crossover utilizada no experimento pertence ao intervalo (0.6, 1). Dessa forma, um número real r é sortido no intervalo (0,1), seguindo uma distribuição uniforme. O cruzamento só ocorre caso r <= PC. Caso isso não ocorra, os pais serão repetidos na próxima geração. Havendo o cruzamento, um ponto de crossover, cp, é sorteado no intervalo [2, 10], com distribuição uniforme, formando os dois descendentes que substituirão seus pais na população.
+For the crossover phase, the population is divided into pairs, so that each pair corresponds to the two individuals that will possibly generate another two descendant, that will replace them in the population. The crossover rate used in the experiment belongs to the interval (0.6, 1). Thus, a real number r is sorted in the interval (0, 1), following a uniform distribution. The crossover occurs only if r <= PC. If this does not occur, the parents will be repeated in the next generation. When the crossover occurs, a crossover point, cp, is drawn on the interval [2, 10], with uniform distribution, forming the two descendants that will replace their parents in the population.
 
-Em relação a mutação, cada posição da matriz da população é percorrida e gerado um respectivo valor aleatório real r, seguindo uma distribuição uniforme no intervalo (0,1). Caso r <= pm, o bit correspondente tem seu valor invertido.
+Regarding mutation, each position of the population matrix is run through and a respective real random value r is generated, following a uniform distribution in the interval (0,1). If r <= pm, the corresponding bit has its value reversed.
 
-## Exemplo de como rodar o projeto
+## Example of how to run the project
 ``` 
-PC = 0.6 + (1 - 0.6) * rand; % 0,6 < PC < 1.0
+PC = 0.6 + (1 - 0.6) * rand;        % 0,6 < PC < 1.0
 pm = 0.01;
-n = 16; % num de indivíduos
-results(1,:) =  exercicio_01(PC, pm,n);
+n = 16;                             % number of individuals
+results =  exercise_01(PC, pm,n);
+```
+
+# Exercise 02
+**Goal:** Implement genetic algorithm to maximize the function $g(x) = 2^{-2{((x-0.1)/0.9)}^2}{(sin(5\pi x))}^6$. 
+
+**Parameters for running the algorithm:**
+- $PC$ (real number): crossover rate;
+- $pm$ (real number): mutation probability;
+- $n$ (even integer): number of individuals in the population;
+- $max\_it$: maximum number of iterations.
+
+**Algorithm Operation:** The structure of the algorithm is similar to Exercise 01. One modification is to start the population with randomly chosen real numbers in the interval (0,1), following the uniform distribution. Each of these numbers is converted to a bitstring of fixed size 32, chosen empirically. The conversion process adopts 1 bit to store the integer part of the number and the other 31 bits are used to store the fractional part. Thus, the population consists of $n$ individuals, and is represented by a matrix of $n$ rows and 32 columns, where each row represents the $n$-th individual.
+
+The evaluation function consists of $g(x)$ itself. So, to calculate the fitness of the individuals, each of them is converted to its real value and applied to the function. The selection, crossover and mutation methods are the same as in the previous exercise. The stopping criterion consists of a limit number of runs and when there is no improvement in the fitness of the population.
+
+## Example of how to run the project
+``` 
+n = 100;                      % num of individuals
+max_it = 10;
+PC = 0.6 + (1 - 0.6) * rand;  % 0,6 < PC < 1.0
+pm = 0.01;                    % pm varies between 0.01 and 0.02
+results = exercise_02(PC, pm, n, max_it);
+```
+
+## Bonus
+We can solve exercise 2 by the methods: hill climbing and simulated annealing.
+
+```
+results = simulated_annealing(max_it)
+
+input: maximum number of iterations (int)
+output: number of iterations | x | g(x) | (matrix 1x3)
+```
+```
+results = hill_climbing(max_it)
+
+input: maximum number of iterations (int)
+output: | number of iterations | x | g(x) | execution time | (matrix 1x4)
+```
+
+# Exercise 03
+**GOal****: Implement a genetic algorithm to minimize the function $𝑓(𝑥,𝑦)= (1-𝑥)^2+100 (𝑦- 𝑥^2)^2$ on the continuous interval $\begin{bmatrix} -5 & +5 \\ -5 & +5 \\ \end{bmatrix}$.
+
+**Parameters for running the algorithm:**
+- $PC$ (real number): crossover rate;
+- $pm$ (real number): mutation probability;
+- $n$ (even integer): number of individuals in the population;
+
+**Algorithm Operation:** In this algorithm it was taken into account that each of the individuals is formed by a bitstring of size 64, where the interval [0,32] represents the bitstring of variable $x$ and the interval [32,64] represents variable y. Knowing this, it is considered that the first bit of each bitstring is used for the sign representation, being equal to 1 for positive numbers and 0 for negative numbers, that is, given a bitstring of size 64, positions 1 and 33 indicate the signs of variables $x$ and y, respectively.
+
+To make up the population of size $n$, two numbers in the interval (0,1) with uniform distribution are drawn. Then these numbers are multiplied by 10, giving the interval (0,10), and then 5 is subtracted, resulting in individuals within the interval -5 to +5. In the same way as in the previous exercise, the numbers are converted to binary values, considering 3 bits to store the integer part and 28 bits for the fractional part, resulting in 32 bits.
+
+To evaluate the fitness of individuals, the function $f (x, y)$ is used. In the evaluation, each bitstring is separated into its respective variable $x$ and $y$, as explained earlier, and applied to the function, resulting in its fitness value. All fitness values are stored in a vector of size 1 x $n$, so that each column represents the $n$-th individual in the population.
+
+The stopping criterion taken into account is a maximum value of iterations and when there is no improvement in the fitness function, $k$. The selection, crossover and mutation methods are the same as in the previous exercises.
+
+## Example of how to run the project
+``` 
+n = 100;                      % num of individuals
+max_it = 10;
+PC = 0.6 + (1 - 0.6) * rand;  % 0,6 < PC < 1.0
+pm = 0.01;                    % pm varies between 0.01 and 0.02
+results = exercise_03(PC, pm, n, max_it);
 ```
