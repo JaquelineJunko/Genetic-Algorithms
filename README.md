@@ -23,7 +23,7 @@ For the crossover phase, the population is divided into pairs, so that each pair
 Regarding mutation, each position of the population matrix is run through and a respective real random value r is generated, following a uniform distribution in the interval (0,1). If r <= pm, the corresponding bit has its value reversed.
 
 ## Example of how to run the project
-``` 
+``` matlab
 PC = 0.6 + (1 - 0.6) * rand;        % 0,6 < PC < 1.0
 pm = 0.01;
 n = 16;                             % number of individuals
@@ -44,7 +44,7 @@ results =  exercise_01(PC, pm,n);
 The evaluation function consists of g(x) itself. So, to calculate the fitness of the individuals, each of them is converted to its real value and applied to the function. The selection, crossover and mutation methods are the same as in the previous exercise. The stopping criterion consists of a limit number of runs and when there is no improvement in the fitness of the population.
 
 ## Example of how to run the project
-``` 
+``` matlab
 n = 100;                      % num of individuals
 max_it = 10;
 PC = 0.6 + (1 - 0.6) * rand;  % 0,6 < PC < 1.0
@@ -55,13 +55,13 @@ results = exercise_02(PC, pm, n, max_it);
 ## Bonus
 We can solve exercise 2 by the methods: hill climbing and simulated annealing.
 
-```
+``` matlab
 results = simulated_annealing(max_it)
 
 input: maximum number of iterations (int)
 output: number of iterations | x | g(x) | (matrix 1x3)
 ```
-```
+``` matlab
 results = hill_climbing(max_it)
 
 input: maximum number of iterations (int)
@@ -85,7 +85,7 @@ To evaluate the fitness of individuals, the function f (x, y) is used. In the ev
 The stopping criterion taken into account is a maximum value of iterations and when there is no improvement in the fitness function, k. The selection, crossover and mutation methods are the same as in the previous exercises.
 
 ## Example of how to run the project
-``` 
+``` matlab
 n = 100;                      % num of individuals
 max_it = 10;
 PC = 0.6 + (1 - 0.6) * rand;  % 0,6 < PC < 1.0
